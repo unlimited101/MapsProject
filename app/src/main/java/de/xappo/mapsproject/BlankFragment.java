@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -39,8 +40,9 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback {
     private OnFragmentInteractionListener mListener;
 
 
-    private static final String TAG = "MapsActivity";
+    private static final String TAG = "BlankFragment";
     private GoogleMap mMap;
+    private MapView mMapView;
 
     public BlankFragment() {
         // Required empty public constructor
@@ -82,12 +84,18 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mMapView = (MapView) view.findViewById(R.id.map);
+        mMapView.onCreate(savedInstanceState);
+        mMapView.getMapAsync(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+        Log.i(TAG, "onResume()");
     }
 
     // TODO: Rename method, update argument and hook method into UI event
